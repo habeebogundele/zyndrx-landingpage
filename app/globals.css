@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f8e6e6;
+}
+
+.showcase-image {
+  transform: perspective(1000px) rotateY(-15deg);
+}
+
+.sm-img {
+  transform: perspective(1000px) rotateY(15deg);
+}
