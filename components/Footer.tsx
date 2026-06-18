@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Logo from "@/components/Logo";
 
 const footerLinks = {
   Product: [
@@ -23,12 +23,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#7e3fea] text-base font-bold text-white">
-                Z
-              </span>
-              <span className="text-lg font-bold text-gray-900">Zyndrx</span>
-            </Link>
+            <Logo size={32} />
             <p className="mt-3 text-sm text-gray-600">
               Unity for teams. Clarity in every workflow.
             </p>
