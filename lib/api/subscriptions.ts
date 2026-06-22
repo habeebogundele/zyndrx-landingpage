@@ -1,52 +1,29 @@
-import { fallbackSubscriptionPlans } from "@/lib/data/fallback-plans";
 import type {
   SubscriptionPlan,
   SubscriptionPlansResponse,
 } from "@/lib/types/subscription";
 
-const PLANS_API_URL =
-  process.env.SUBSCRIPTIONS_API_URL ??
-  "https://api.zyndrx.soothetechnologies.com/api/subscriptions/plans";
+const API_BASE = process.env.SUBSCRIPTIONS_API_TOKEN ?? "";
 
-function getRequestHeaders(): HeadersInit {
-  const headers: HeadersInit = {
-    Accept: "application/json",
-  };
-
-  const token = process.env.SUBSCRIPTIONS_API_TOKEN;
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  return headers;
-}
+const PLANS_API_URL = `${API_BASE.replace(/\/$/, "")}/subscriptions/plans`;
 
 export async function getSubscriptionPlans(): Promise<SubscriptionPlan[]> {
-  try {
-    const response = await fetch(PLANS_API_URL, {
-      headers: getRequestHeaders(),
-      next: { revalidate: 3600 },
-    });
+  const response = await fetch(PLANS_API_URL, {
+    headers: { Accept: "application/json" },
+    next: { revalidate: 3600 },
+  });
 
-    if (!response.ok) {
-      console.warn(
-        `Subscription plans API returned ${response.status}, using fallback data.`,
-      );
-      return fallbackSubscriptionPlans;
-    }
-
-    const json: SubscriptionPlansResponse = await response.json();
-
-    if (!json.success || !Array.isArray(json.data) || json.data.length === 0) {
-      console.warn("Invalid subscription plans response, using fallback data.");
-      return fallbackSubscriptionPlans;
-    }
-
-    return json.data.filter((plan) => plan.active);
-  } catch (error) {
-    console.warn("Failed to fetch subscription plans, using fallback data.", error);
-    return fallbackSubscriptionPlans;
+  if (!response.ok) {
+    throw new Error(`Failed to fetch plans: ${response.status}`);
   }
+
+  const json: SubscriptionPlansResponse = await response.json();
+
+  if (!json.success || !Array.isArray(json.data)) {
+    throw new Error("Invalid plans response");
+  }
+
+  return json.data.filter((plan) => plan.active);
 }
 
 export function formatPlanPrice(price: number, currency: string): string {

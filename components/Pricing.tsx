@@ -6,9 +6,16 @@ import {
   getSubscriptionPlans,
   isHighlightedPlan,
 } from "@/lib/api/subscriptions";
+import type { SubscriptionPlan } from "@/lib/types/subscription";
 
 export default async function Pricing() {
-  const plans = await getSubscriptionPlans();
+  let plans: SubscriptionPlan[] = [];
+
+  try {
+    plans = await getSubscriptionPlans();
+  } catch {
+    plans = [];
+  }
 
   return (
     <section id="pricing" className="px-4 py-16 md:px-8">
@@ -22,8 +29,13 @@ export default async function Pricing() {
           anytime.
         </p>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {plans.map((plan) => {
+        {plans.length === 0 ? (
+          <p className="mt-12 text-center text-gray-600">
+            Unable to load pricing plans right now. Please try again later.
+          </p>
+        ) : (
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {plans.map((plan) => {
               const highlighted = isHighlightedPlan(plan);
               const featureList = formatPlanFeatures(plan.features);
 
@@ -99,7 +111,8 @@ export default async function Pricing() {
                 </div>
               );
             })}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
