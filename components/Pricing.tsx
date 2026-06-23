@@ -6,6 +6,7 @@ import {
   getSubscriptionPlans,
   isHighlightedPlan,
 } from "@/lib/api/subscriptions";
+import { getAppUrl } from "@/lib/config/site";
 import type { SubscriptionPlan } from "@/lib/types/subscription";
 
 export default async function Pricing() {
@@ -97,7 +98,7 @@ export default async function Pricing() {
                     ))}
                   </ul>
 
-                  <a href="#getstarted" className="mt-8 block">
+                  <a href={getAppUrl()} className="mt-8 block">
                     <button
                       className={`w-full rounded-full py-3 font-medium transition-colors ${
                         highlighted

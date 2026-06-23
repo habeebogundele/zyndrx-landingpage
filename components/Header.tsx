@@ -1,4 +1,5 @@
 import Logo from "@/components/Logo";
+import { getAppUrl } from "@/lib/config/site";
 
 const navLinks = [
   { href: "#features", label: "Features" },
@@ -25,7 +26,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <a href="#getstarted">
+        <a href={getAppUrl()}>
           <button className="hidden rounded-md bg-gray-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#7e3fea] md:block">
             Get Started
           </button>

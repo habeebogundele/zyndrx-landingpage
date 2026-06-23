@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getAppUrl } from "@/lib/config/site";
 
 export default function Hero() {
   return (
@@ -23,7 +24,7 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row md:items-start">
-            <a href="#getstarted">
+            <a href={getAppUrl()}>
               <button className="flex items-center gap-2 rounded-full border border-[#7e3fea] bg-white px-6 py-3 font-medium text-[#7e3fea] transition-colors hover:bg-[#7e3fea] hover:text-white">
                 Get Started
                 <Image
